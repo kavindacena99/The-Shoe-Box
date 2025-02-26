@@ -20,6 +20,14 @@ Route::get('/category',function(){
     return view('category');
 })->name('categories');
 
+Route::get('/cart',function(){
+    return view('cart');
+})->name('cart');
+
+Route::get('/profile',function(){
+    return view('profile');
+})->name('profile');
+
 
 // with some processes
 Route::get('/signup',[UserController::class,'signupindex'])->name('signup');
