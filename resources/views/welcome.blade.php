@@ -28,10 +28,13 @@
                     <div class="card">
                         <img src="{{ asset('images/items/'.$shoe->imagename) }}" class="card-img-top" alt="{{ $shoe->itemname }}">
                         <div class="card-body text-center">
-                            <a href="{{ route('items.show',$shoe->id) }}"><h5 class="card-title">{{ $shoe->itemname }}</h5></a>
-                            <h5 class="card-title">{{ $shoe->itemname }}</h5>
+                            <a href="{{ route('items.show',$shoe->id) }}" style="text-decoration: none"><h5 class="card-title">{{ $shoe->itemname }}</h5></a>
                             <p class="card-text">${{ $shoe->price }}</p>
-                            <a href="" class="btn btn-success">Buy Now</a>
+                            <form action="{{ route('cart.add',$shoe->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-primary">Add to Cart</button>
+                            </form>
+                            
                         </div>
                     </div>
                 </div>

@@ -18,7 +18,7 @@
             </ul>
         </div>
         <div class="d-flex">
-            <a href="{{ route('cart') }}" class="btn btn-outline-primary ms-3">Cart <i class="bi bi-cart"></i></a>
+            <a href="{{ route('cart.show') }}" class="btn btn-outline-primary ms-3">Cart <i class="bi bi-cart"></i></a>
             <a href="{{ route('profile') }}" class="btn btn-outline-secondary ms-3">Profile<i class="bi bi-person"></i></a>
         </div>
     </div>
