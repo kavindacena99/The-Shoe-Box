@@ -2,11 +2,10 @@
 
 use App\Http\Controllers\UserController;
 use App\Models\User;
+use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [ItemController::class,'index'])->name('home');
 
 Route::get('/contact',function(){
     return view('contact');
@@ -37,3 +36,9 @@ Route::get('/login',[UserController::class,'loginindex'])->name('login');
 Route::post('/login',[UserController::class,'authenticate'])->name('auth');
 
 Route::get('/logout',[UserController::class,'logout'])->name('logout');
+
+// click and redirect to its page
+Route::get('/items',[ItemController::class,'index'])->name('items.index');
+Route::get('/items/{id}',[ItemController::class,'show'])->name('items.show');
+
+
