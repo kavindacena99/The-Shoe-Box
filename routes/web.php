@@ -48,7 +48,9 @@ Route::get('/items/{id}',[ItemController::class,'show'])->name('items.show');
 
 // cart activities
 
-Route::get('/cart',[CartController::class,'showcart'])->name('cart.show');
-Route::post('/cart/add/{id}',[CartController::class,'addtocart'])->name('cart.add');
-Route::post('/cart/remove/{id}',[CartController::class,'removefromcart'])->name('cart.remove');
-Route::post('/cart/clear',[CartController::class,'clearcart'])->name('cart.clear');
+Route::middleware(['auth'])->group(function(){
+    Route::get('/cart',[CartController::class,'showcart'])->name('cart.show');
+    Route::post('/cart/add/{id}',[CartController::class,'addtocart'])->name('cart.add');
+    Route::post('/cart/remove/{id}',[CartController::class,'removefromcart'])->name('cart.remove');
+    Route::post('/cart/clear',[CartController::class,'clearcart'])->name('cart.clear');
+});

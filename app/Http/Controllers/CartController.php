@@ -1,85 +1,66 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Item;
 use App\Models\Cart;
+use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-
-    //show the cart
-    public function showcart()
-    {
-        $user = Auth::user();
-        if(!$user){
-            return redirect()->route('login')->with('error', 'You need to login to view cart');
-        }
-
-        $cart = session()->get('cart_' . $user->id , []);
-        return view('cart.cartitems', compact('cart'));
-    }
-
     public function addtocart(Request $request, $id)
     {
-        $user = auth::user();
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'You must be logged in to add items to your cart.');
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must log in to add items to the cart.');
         }
 
+        $user = Auth::user();
         $item = Item::findOrFail($id);
 
-        // Get the cart for the authenticated user
-        $cart = session()->get('cart_' . $user->id, []);
+        // Check if item is already in the cart
+        $cartItem = Cart::where('user_id', $user->id)->where('item_id', $item->id)->first();
 
-        if (isset($cart[$id])) {
-            $cart[$id]['quantity']++;
+        if ($cartItem) {
+            // Increase quantity if item already exists
+            $cartItem->quantity += 1;
+            $cartItem->save();
         } else {
-            $cart[$id] = [
-                'name' => $item->itemname,
-                'price' => $item->price,
-                'quantity' => 1,
-                'image' => $item->imagename
-            ];
+            // Add new item to cart
+            Cart::create([
+                'user_id' => $user->id,
+                'item_id' => $item->id,
+                'quantity' => 1
+            ]);
         }
 
-        session()->put('cart_' . $user->id, $cart);
-        return redirect()->route('cart.show')->with('success', 'Item added to your cart!');
-}
+        return redirect()->route('cart.show')->with('success', 'Item added to cart.');
+    }
 
+    public function showcart()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must log in to view your cart.');
+        }
 
-    
+        $cartItems = Cart::where('user_id', Auth::id())->with('item')->get();
 
-    //remove item from the cart
+        //dd($cartItems);
+        return view('cart.cartitems',compact('cartItems'));
+    }
+
     public function removefromcart($id)
     {
-        $user = Auth::user();
-        if(!$user){
-            return redirect()->route('login')->with('error', 'You need to login to remove items from cart');
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must log in to modify your cart.');
         }
 
-        $cart = session()->get('cart_' . $user->id, []);
+        $cartItem = Cart::where('user_id', Auth::id())->where('id', $id)->first();
 
-        if (isset($cart[$id])) {
-            unset($cart[$id]);
-            session()->put('cart_' . $user->id, $cart);
+        if ($cartItem) {
+            $cartItem->delete();
+            return redirect()->route('cart.show')->with('success', 'Item removed from cart.');
         }
 
-        return redirect()->route('cart.show')->with('success', 'Item removed from cart!');
+        return redirect()->route('cart.show')->with('error', 'Item not found in cart.');
     }
-
-    // Clear the cart
-    public function clearcart()
-    {
-        $user = Auth::user();
-        if(!$user){
-            return redirect()->route('login')->with('error', 'You need to login to clear cart');
-        }
-
-        session()->forget('cart_' . $user->id);
-        return redirect()->route('')->with('success', 'Cart cleared!');
-    }
-
 }
