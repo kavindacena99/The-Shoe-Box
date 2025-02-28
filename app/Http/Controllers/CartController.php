@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
@@ -24,17 +25,15 @@ class CartController extends Controller
     public function addtocart(Request $request, $id)
     {
         $user = auth::user();
-
-        if(!$user){
-            return redirect()->route('login')->with('error', 'You need to login to add items to cart');
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'You must be logged in to add items to your cart.');
         }
 
         $item = Item::findOrFail($id);
 
-        // Retrieve cart from session or initialize an empty array
-        $cart = session()->get('cart_'. $user->id, []);
+        // Get the cart for the authenticated user
+        $cart = session()->get('cart_' . $user->id, []);
 
-        // If item is already in cart, increase quantity
         if (isset($cart[$id])) {
             $cart[$id]['quantity']++;
         } else {
@@ -44,12 +43,12 @@ class CartController extends Controller
                 'quantity' => 1,
                 'image' => $item->imagename
             ];
-
-            session()->put('cart_' . $user->id, $cart);
         }
 
-        return redirect()->route('cart.show')->with('success', 'Item added to cart!');
-    }
+        session()->put('cart_' . $user->id, $cart);
+        return redirect()->route('cart.show')->with('success', 'Item added to your cart!');
+}
+
 
     
 
