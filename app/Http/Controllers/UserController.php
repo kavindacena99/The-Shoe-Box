@@ -53,4 +53,8 @@ class UserController extends Controller
         Auth::logout();
         return redirect()->route('login')->with('success','Logout successful');
     }
+
+    public function profile(){
+        return view('profile');
+    }
 }

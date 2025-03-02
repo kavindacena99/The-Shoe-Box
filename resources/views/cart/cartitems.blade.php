@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@include('layouts.nav')
 <div class="container">
-    <h2>Your Cart</h2>
+    <h2 style="color:#B22222">My Cart</h2>
 
     @if($cartItems->isEmpty())
         <p>Your cart is empty.</p>
@@ -33,6 +34,7 @@
                 @endforeach
             </tbody>
         </table>
+        <button type="submit" class="btn btn-danger">Check Out</button>
     @endif
 </div>
 @endsection

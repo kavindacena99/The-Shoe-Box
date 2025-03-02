@@ -5,8 +5,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-5" style="padding-top:15%">
-            <h1 class="text-center">The Shoe Box</h1>
-            <h3 class="text-center">Sign Up</h3>
+            <h1 class="text-center" style="color:#B22222">The Shoe Box</h1>
+            <h3 class="text-center">Sign Up</h3><p class="text-center">If you have an account&nbsp;<a style="text-decoration: none;color:#B22222" href="{{ route('login') }}">Login</a></p>
         </div>
         <div class="col-md-7" style="padding:10%">
             <form action="{{ route('createuser') }}" method="POST">
@@ -31,7 +31,7 @@
                     <label for="confirm-password" class="form-label">Confirm Password</label>
                     <input type="password" name="password_confirmation" class="form-control" id="confirm-password" placeholder="Confirm your password" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                <button type="submit" class="btn btn-danger w-100">Sign Up</button>
             </form>
         </div>
     </div>

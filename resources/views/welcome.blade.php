@@ -14,14 +14,14 @@
     @endif 
      -->
 
-    <header class="text-white text-center py-5" style="background: url('{{ asset('images/dummy.jpg') }}') no-repeat center center/cover;">
-        <h1>Welcome to Shoe Box</h1>
+    <header class="text-white text-center py-5" style="opacity:0.8;background: url('{{ asset('images/dummy.jpg') }}') no-repeat center center/cover;">
+        <h1>Welcome to The Shoe Box</h1>
         <p>Your ultimate destination for stylish and comfortable shoes</p>
-        <a href="#" class="btn btn-dark mt-3">Shop Now</a>
+        <a href="#" class="btn btn-danger mt-3">Shop Now</a>
     </header>
     
-    <div class="container my-5">
-        <h2 class="text-center">Featured Shoes</h2>
+    <div class="container my-5" style="border:1px solid red">
+        <h2 class="text-center" style="color:#B22222">Featured Shoes</h2>
         <div class="row mt-4">
             @foreach($items as $shoe)
                 <div class="col-md-4">
@@ -32,11 +32,10 @@
                             <p class="card-text">${{ $shoe->price }}</p>
                             <form action="{{ route('cart.add',$shoe->id) }}" method="POST">
                                 @csrf
-                                <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                <button type="submit" class="btn btn-danger">Add to Cart</button>
                             </form>
-                            
                         </div>
-                    </div>
+                    </div><br>
                 </div>
             @endforeach
         </div>
